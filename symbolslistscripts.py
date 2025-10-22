@@ -13,13 +13,17 @@ import subprocess, sys, time, itertools
 #packages should be entered in string format. # e.g "PyMuPDF"
 packages = {"PyMuPDF":"fitz"}
 
-def installDependencies(packages):
-    spinner = itertools.cycle("▖▘▝▗")
+#quick fake spinner
+spinner = itertools.cycle("▖▘▝▗")
+
+def installDependencies(packages, spinner):
+
     for pipCommand, importCommand in packages.items():
         try:
             print(f"importing {pipCommand}...", end="", flush=True)
-            for _ in range(10):
-                time.sleep(0.05)
+            #i could while loops this but will require multi threads and honestly faking it is enough.
+            for _ in range(5):
+                time.sleep(0.5)
                 print(f"\r Importing {pipCommand} {next(spinner)}", end="", flush=True)
             __import__(importCommand)
         except ImportError:
@@ -29,8 +33,10 @@ def installDependencies(packages):
 
 import tkinter as tk
 from tkinter import filedialog as fd
+import fritz
 
 def grabFilePath():
+    """Basic function to Open a dialogue box, whilst import works this removes bugs copy pasting filepaths"""
     root = tk.Tk()
     root.withdraw()
 
@@ -39,9 +45,16 @@ def grabFilePath():
     filetypes=[(".pdf", "*.*")]
 )
     print(f"file path selected : {filePath}")
+    return filePath
 
+def openPDF(path):
+    PDF = fritz.open(path)
+    return PDF
 
 def main():
+    installDependencies(packages, spinner)
     filePath = grabFilePath()
+    openPDF(filePath)
+
 
 main()
