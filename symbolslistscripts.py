@@ -8,19 +8,24 @@
 # will then need to go through document and check for things like GCD
 
 #installing dependencies
-import subprocess
-import sys
+import subprocess, sys, time, itertools
 
 #packages should be entered in string format. # e.g "PyMuPDF"
-packages = ["PyMuPDF"]
+packages = {"PyMuPDF":"fitz"}
 
-def installdependencies(packages):
-    for package in packages:
+def installDependencies(packages):
+    spinner = itertools.cycle("▖▘▝▗")
+    for pipCommand, importCommand in packages.items():
         try:
-            __import__(package)
+            print(f"importing {pipCommand}...", end="", flush=True)
+            for _ in range(10):
+                time.sleep(0.05)
+                print(f"\r Importing {pipCommand} {next(spinner)}", end="", flush=True)
+            __import__(importCommand)
         except ImportError:
-            print(f"installing required package {package} please standby.")
-    print("Packages installed, Requesting File Path from user.")
+            print(f"\nInstalling required package: {pipCommand} please standby...")
+            subprocess.check_call([sys.executable, "-m", "pip", "install", pipCommand])
+    print("Packages installed.")
 
 import tkinter as tk
 from tkinter import filedialog as fd
