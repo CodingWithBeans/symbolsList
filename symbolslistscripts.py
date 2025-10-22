@@ -48,15 +48,32 @@ def grabFilePath():
     return filePath
 
 def openPDF(path):
-    PDF = fitz.open(path)
-    return PDF
+    """Honestly look at the name to work out what it does this docustring is longer than the function"""
+    pdf = fitz.open(path)
+    return pdf
+
+def parsePDF(pdf):
+    """parse the pdf"""
+    #counters page will return a list
+    symbolCount = 0
+    symbolPage = []
+
+    for pageNumber in range(1, (len(pdf) + 1)):
+        page = pdf.load_page(pageNumber - 1)
+        pageText = page.get_text("text")
+        for c in pageText:
+            #testing for = sign will need a regex later
+            if c == "=":
+                #if we find = sign up the counters
+                symbolCount += 1
+                symbolPage.append(pageNumber)
+        print(f"Count for = : {symbolCount} and appears on pages: {symbolPage}")
+        sys.exit
 
 def main():
     installDependencies(packages, spinner)
     filePath = grabFilePath()
-    PDF = openPDF(filePath)
-    page = PDF.load_page(0)
-    print(page.get_text("text"))
-    PDF.close()
+    pdf = openPDF(filePath)
+    parsePDF(pdf)
 
 main()
