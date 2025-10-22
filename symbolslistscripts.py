@@ -9,6 +9,9 @@
 
 #installing dependencies
 import subprocess, sys, time, itertools
+from os import system
+import tkinter as tk
+from tkinter import filedialog as fd
 
 #packages should be entered in string format. # e.g "PyMuPDF"
 packages = {"PyMuPDF":"fitz"}
@@ -16,23 +19,29 @@ packages = {"PyMuPDF":"fitz"}
 #quick fake spinner
 spinner = itertools.cycle("▖▘▝▗")
 
+def permission(packages):
+    answer = input(f"The Script will now attempt to install the following libraries {packages}! Do you wish to continue? [Y/N]").strip().upper()
+    if answer[0] == "Y":
+        return 0
+    else:
+        sys.exit()
+
 def installDependencies(packages, spinner):
 
     for pipCommand, importCommand in packages.items():
         try:
-            print(f"importing {pipCommand}...", end="", flush=True)
+            print(f"testing import {pipCommand}...", flush=True)
             #i could while loops this but will require multi threads and honestly faking it is enough.
             for _ in range(5):
                 time.sleep(0.5)
-                print(f"\r Importing {pipCommand} {next(spinner)}", end="", flush=True)
+                print(f"\rImporting {pipCommand} {next(spinner)}", end="", flush=True)
             __import__(importCommand)
         except ImportError:
             print(f"\nInstalling required package: {pipCommand} please standby...")
             subprocess.check_call([sys.executable, "-m", "pip", "install", pipCommand])
+    system('cls')
     print("Packages installed.")
 
-import tkinter as tk
-from tkinter import filedialog as fd
 import fitz
 
 def grabFilePath():
@@ -63,14 +72,17 @@ def parsePDF(pdf):
         pageText = page.get_text("text")
         for c in pageText:
             #testing for = sign will need a regex later
-            if c == "=":
+            if c == "-":
                 #if we find = sign up the counters
                 symbolCount += 1
                 symbolPage.append(pageNumber)
-    print(f"Count for = : {symbolCount} and appears on pages: {symbolPage}")
+    print(f"Count for - : {symbolCount} and appears on pages: {symbolPage}")
     sys.exit
 
 def main():
+    system('cls')
+    permission(packages)
+    system('cls')
     installDependencies(packages, spinner)
     filePath = grabFilePath()
     pdf = openPDF(filePath)
