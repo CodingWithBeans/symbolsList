@@ -67,8 +67,8 @@ def parsePDF(pdf):
                 #if we find = sign up the counters
                 symbolCount += 1
                 symbolPage.append(pageNumber)
-        print(f"Count for = : {symbolCount} and appears on pages: {symbolPage}")
-        sys.exit
+    print(f"Count for = : {symbolCount} and appears on pages: {symbolPage}")
+    sys.exit
 
 def main():
     installDependencies(packages, spinner)
