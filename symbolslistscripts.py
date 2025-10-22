@@ -33,7 +33,7 @@ def installDependencies(packages, spinner):
 
 import tkinter as tk
 from tkinter import filedialog as fd
-import fritz
+import fitz
 
 def grabFilePath():
     """Basic function to Open a dialogue box, whilst import works this removes bugs copy pasting filepaths"""
@@ -48,13 +48,15 @@ def grabFilePath():
     return filePath
 
 def openPDF(path):
-    PDF = fritz.open(path)
+    PDF = fitz.open(path)
     return PDF
 
 def main():
     installDependencies(packages, spinner)
     filePath = grabFilePath()
-    openPDF(filePath)
-
+    PDF = openPDF(filePath)
+    page = PDF.load_page(0)
+    print(page.get_text("text"))
+    PDF.close()
 
 main()
