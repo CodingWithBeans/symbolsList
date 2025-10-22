@@ -20,11 +20,18 @@ packages = {"PyMuPDF":"fitz"}
 spinner = itertools.cycle("▖▘▝▗")
 
 def permission(packages):
+
     answer = input(f"The Script will now attempt to install the following libraries {packages}! Do you wish to continue? [Y/N]").strip().upper()
-    if answer[0] == "Y":
-        return 0
-    else:
-        sys.exit()
+    system('cls')
+    match answer:
+        case "N":
+            sys.exit()
+        case "Y":
+            return 0
+        case _:
+            print("Please answer either Y or N")
+            return permission(packages)
+    
 
 def installDependencies(packages, spinner):
 
@@ -62,22 +69,28 @@ def openPDF(path):
     return pdf
 
 def parsePDF(pdf):
-    """parse the pdf"""
-    #counters page will return a list
-    symbolCount = 0
-    symbolPage = []
+    """Parse the PDF and count symbols."""
+    symbolCount = {}
+    symbolPage = {}
 
-    for pageNumber in range(1, (len(pdf) + 1)):
+    for pageNumber in range(1, len(pdf) + 1):
         page = pdf.load_page(pageNumber - 1)
         pageText = page.get_text("text")
+
         for c in pageText:
-            #testing for = sign will need a regex later
-            if c == "-":
-                #if we find = sign up the counters
-                symbolCount += 1
-                symbolPage.append(pageNumber)
-    print(f"Count for - : {symbolCount} and appears on pages: {symbolPage}")
-    sys.exit
+            if c in symbolCount:
+                symbolCount[c] += 1
+            else:
+                symbolCount[c] = 1
+
+            if c not in symbolPage:
+                symbolPage[c] = set()
+            symbolPage[c].add(pageNumber)
+
+    for c in symbolPage:
+        symbolPage[c] = sorted(symbolPage[c])
+    print(symbolCount, symbolPage)
+    return symbolCount, symbolPage
 
 def main():
     system('cls')
