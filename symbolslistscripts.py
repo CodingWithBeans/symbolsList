@@ -89,10 +89,15 @@ def parsePDF(pdf):
 
     for c in symbolPage:
         symbolPage[c] = sorted(symbolPage[c])
-    print(symbolCount, symbolPage)
+
+    print("----" * 20)
+    print(symbolCount)
+    print("----" * 20)
+    print(symbolPage)
     return symbolCount, symbolPage
 
 def main():
+
     system('cls')
     permission(packages)
     system('cls')
