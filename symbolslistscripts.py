@@ -5,7 +5,6 @@
 # whilst parsing need to add to lists symbols and store page number
 # also need to count each symbol
 # output to terminal , maybe csv if feeling fancy
-# will then need to go through document and check for things like GCD
 
 #installing dependencies
 from os import system
@@ -41,17 +40,8 @@ def parsePDF(pdf):
         pageText = page.get_text("text")
 
         for c in pageText:
-            if c in symbolCount:
-                symbolCount[c] += 1
-            else:
-                symbolCount[c] = 1
-
-            if c not in symbolPage:
-                symbolPage[c] = set()
+            symbolCount[c] += 1
             symbolPage[c].add(pageNumber)
-
-    for c in symbolPage:
-        symbolPage[c] = sorted(symbolPage[c])
 
     print("----" * 20)
     print(symbolCount)

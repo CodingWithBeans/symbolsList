@@ -1,9 +1,6 @@
 #installing dependencies
 import subprocess, sys, time, itertools
 from os import system
-import tkinter as tk
-from tkinter import filedialog as fd
-from collections import defaultdict, Counter
 
 #packages should be entered in string format. # e.g "PyMuPDF"
 packages = {"PyMuPDF":"fitz"}
@@ -11,7 +8,7 @@ packages = {"PyMuPDF":"fitz"}
 #quick fake spinner
 spinner = itertools.cycle("▖▘▝▗")
 
-def permission(packages):
+def permission(packages = packages):
 
     answer = input(f"The Script will now attempt to install the following libraries {packages}! Do you wish to continue? [Y/N]").strip().upper()
     system('cls')
@@ -25,7 +22,7 @@ def permission(packages):
             return permission(packages)
     
 
-def installDependencies(packages, spinner):
+def installDependencies(packages = packages, spinner = spinner):
 
     for pipCommand, importCommand in packages.items():
         try:
@@ -40,3 +37,10 @@ def installDependencies(packages, spinner):
             subprocess.check_call([sys.executable, "-m", "pip", "install", pipCommand])
     system('cls')
     print("Packages installed.")
+
+def main():
+    permission()
+    installDependencies()
+
+if __name__ == "__main__":
+    main()
