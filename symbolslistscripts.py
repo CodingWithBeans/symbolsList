@@ -66,7 +66,7 @@ def displayOrPdf():
 def displayOnTerminal(symbolCount, symbolPage):
     print("Symbol | Count | Pages")
     print("~" * 22)
-    for symbol, count in symbolCount:
+    for symbol, count in symbolCount.most_common():
         pages = ", ". join(str(pnum) for pnum in sorted(symbolPage[symbol]))
     print(f"{symbol}|{count}|{pages}")
 
