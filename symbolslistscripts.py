@@ -43,12 +43,33 @@ def parsePDF(pdf):
             symbolCount[c] += 1
             symbolPage[c].add(pageNumber)
 
-    print("----" * 20)
-    print(symbolCount)
-    print("----" * 20)
-    print(symbolPage)
     return symbolCount, symbolPage
 
+def displayOrPdf():
+    answer = input(f"""
+                   Would you like to:
+                   1) Print output to the terminal?
+                   2) save output to CSV?
+                   3) both?""")
+    match answer:
+        case "1":
+            displayOnTerminal()
+        case "2":
+            outputToPDF()
+        case "3":
+            displayOnTerminal()
+            outputToPDF()
+        case _:
+            print("Please answer either 1 or 2")
+            return displayOrPdf()
+        
+def displayOnTerminal():
+    return 0
+
+def outputToPDF():
+    return 0
+
+    
 def main():
 
     filePath = grabFilePath()
