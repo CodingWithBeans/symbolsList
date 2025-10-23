@@ -60,11 +60,15 @@ def displayOrPdf():
             displayOnTerminal()
             outputToPDF()
         case _:
-            print("Please answer either 1 or 2")
+            print("Please answer either [1,2,3]")
             return displayOrPdf()
         
-def displayOnTerminal():
-    return 0
+def displayOnTerminal(symbolCount, symbolPage):
+    print("Symbol | Count | Pages")
+    print("~" * 22)
+    for symbol, count in symbolCount:
+        pages = ", ". join(str(pnum) for pnum in sorted(symbolPage[symbol]))
+    print(f"{symbol}|{count}|{pages}")
 
 def outputToPDF():
     return 0
@@ -74,6 +78,8 @@ def main():
 
     filePath = grabFilePath()
     pdf = openPDF(filePath)
-    parsePDF(pdf)
+    symbolCount, symbolPage =parsePDF(pdf)
+    displayOnTerminal(symbolCount, symbolPage)
 
-main()
+if __name__ == "__main__":
+    main()
