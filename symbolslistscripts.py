@@ -32,6 +32,7 @@ def openPDF(path):
     return pdf
 
 def parsePDF(pdf):
+    
     """Parse the PDF and count symbols."""
     symbolCount = Counter()
     symbolPage = defaultdict(set)
@@ -47,6 +48,7 @@ def parsePDF(pdf):
     return symbolCount, symbolPage
 
 def displayOrPdf():
+
     answer = input(f"""
                    Would you like to:
                    1) Print output to the terminal?
@@ -55,6 +57,7 @@ def displayOrPdf():
     return answer
         
 def displayOnTerminal(symbolCount, symbolPage):
+
     print("Symbol | Count | Pages")
     print("~" * 22)
     for symbol, count in symbolCount.most_common():
