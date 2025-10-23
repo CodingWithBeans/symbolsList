@@ -7,6 +7,7 @@
 # output to terminal , maybe csv if feeling fancy
 
 #installing dependencies
+from sys import exit as EXIT
 from os import system
 import tkinter as tk
 from tkinter import filedialog as fd
@@ -51,17 +52,7 @@ def displayOrPdf():
                    1) Print output to the terminal?
                    2) save output to CSV?
                    3) both?""")
-    match answer:
-        case "1":
-            displayOnTerminal()
-        case "2":
-            outputToPDF()
-        case "3":
-            displayOnTerminal()
-            outputToPDF()
-        case _:
-            print("Please answer either [1,2,3]")
-            return displayOrPdf()
+    return answer
         
 def displayOnTerminal(symbolCount, symbolPage):
     print("Symbol | Count | Pages")
@@ -69,18 +60,38 @@ def displayOnTerminal(symbolCount, symbolPage):
     for symbol, count in symbolCount.most_common():
         pages = ",". join(str(pnum) for pnum in sorted(symbolPage[symbol]))
         #note pages needs 2 chara per page shown
-        print(f"{symbol}|{count}|{pages[:10]}")
+        #bug here is the last page may have a number sliced off
+        #i could for loop but thats gonna massively increase time so no.
+        print(f"{symbol}   |{count}|{pages[:10]}")
 
-def outputToPDF():
+def outputToCSV():
     return 0
 
     
 def main():
 
+    #get file path
     filePath = grabFilePath()
+    #open the pdf
     pdf = openPDF(filePath)
-    symbolCount, symbolPage =parsePDF(pdf)
-    displayOnTerminal(symbolCount, symbolPage)
+    #parse the pdf
+    symbolCount, symbolPage = parsePDF(pdf)
+    #asks user what to do next
+    answer = None
+    while answer not in {"1", "2", "3"}:
+        answer = displayOrPdf()
+    #switch case depending on users choice
+    system("cls")
+    match answer:
+        case "1":
+            displayOnTerminal(symbolCount, symbolPage)
+        case "2":
+            outputToCSV()
+        case "3":
+            displayOnTerminal(symbolCount, symbolPage)
+            outputToCSV()
+        case _:
+            EXIT("Error has occured, Exiting script")
 
 if __name__ == "__main__":
     main()
