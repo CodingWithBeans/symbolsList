@@ -67,8 +67,9 @@ def displayOnTerminal(symbolCount, symbolPage):
     print("Symbol | Count | Pages")
     print("~" * 22)
     for symbol, count in symbolCount.most_common():
-        pages = ", ". join(str(pnum) for pnum in sorted(symbolPage[symbol]))
-    print(f"{symbol}|{count}|{pages}")
+        pages = ",". join(str(pnum) for pnum in sorted(symbolPage[symbol]))
+        #note pages needs 2 chara per page shown
+        print(f"{symbol}|{count}|{pages[:10]}")
 
 def outputToPDF():
     return 0
