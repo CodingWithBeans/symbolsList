@@ -1,4 +1,5 @@
 #installing dependencies
+#this doesnt work properly needs multi threaded for the spinner
 import subprocess, sys, time, itertools
 from os import system
 
